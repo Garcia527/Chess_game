@@ -1,6 +1,6 @@
 package com.chess.engine;
 
-import com.chess.engine.board.*;
+import com.chess.engine.board.Board;
 
 public class JChess {
     
