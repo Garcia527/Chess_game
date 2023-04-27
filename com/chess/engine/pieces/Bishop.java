@@ -71,4 +71,9 @@ public class Bishop extends Piece {
     private static boolean isEigthColumnExclusion(final int currentPosition, final int candidateOffset) {
         return BoardUtils.EIGTH_COLUMN[currentPosition] && (candidateOffset == -7 || candidateOffset == 9);
     }
+
+    @Override
+    public Bishop movePiece(Move move) {
+        return new Bishop(move.getMovedPiece().getPieceAlliance(), move.getDestinationCoordinate());
+    }
 }

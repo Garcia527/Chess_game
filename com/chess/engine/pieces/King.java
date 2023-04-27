@@ -64,4 +64,9 @@ public class King extends Piece {
     private static boolean isEigthColumnExclusion(final int currentPosition, final int candidateOffset) {
         return BoardUtils.EIGTH_COLUMN[currentPosition] && ((candidateOffset == -7) || (candidateOffset == 1) || (candidateOffset == 9));
     }
+
+    @Override
+    public King movePiece(Move move) {
+        return new King(move.getMovedPiece().getPieceAlliance(), move.getDestinationCoordinate());
+    }
 }

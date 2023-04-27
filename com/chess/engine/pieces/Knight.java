@@ -75,4 +75,9 @@ public class Knight extends Piece {
     private static boolean isEightColumnExclusion(final int currentPosition, final int candidateOffset) {
         return BoardUtils.EIGTH_COLUMN[currentPosition] && ((candidateOffset == -15) || (candidateOffset == -6) || (candidateOffset == 10) || (candidateOffset == 17));
     }
+
+    @Override
+    public Knight movePiece(Move move) {
+        return new Knight(move.getMovedPiece().getPieceAlliance(), move.getDestinationCoordinate());
+    }
 }

@@ -71,5 +71,9 @@ public class Queen extends Piece{
     private static boolean isEigthColumnExclusion(final int currentPosition, final int candidateOffset) {
         return BoardUtils.EIGTH_COLUMN[currentPosition] && ( candidateOffset == 1 ||candidateOffset == -7 || candidateOffset == 9);
     }
-    
+
+    @Override
+    public Queen movePiece(Move move) {
+        return new Queen(move.getMovedPiece().getPieceAlliance(), move.getDestinationCoordinate());
+    }
 }

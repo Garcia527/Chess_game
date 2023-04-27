@@ -1,6 +1,8 @@
 package com.chess.engine.board;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.chess.engine.Alliance;
 import com.chess.engine.pieces.Piece;
@@ -158,6 +160,10 @@ public class Board {
         builder.setMoveMaker(Alliance.WHITE);
 
         return builder.build();
+    }
+
+    public Iterable<Move> getAllLegalMoves() { //todo 
+        return Stream.concat(this.whitePlayer.getLegalMoves().stream(), this.blackPlayer.getLegalMoves().stream()).collect(Collectors.toList());
     }
 
     public static class Builder {
