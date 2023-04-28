@@ -2,6 +2,7 @@ package com.chess.engine.player;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import com.chess.engine.Alliance;
@@ -20,7 +21,8 @@ public abstract class Player {
     Player(final Board board, final Collection<Move> legalMoves, final Collection<Move> opponentMoves) {
         this.board = board;
         this.playerKing = establishKing();
-        this.legalMoves = legalMoves;
+        legalMoves.addAll(calculateKingCastle(legalMoves, opponentMoves));
+        this.legalMoves = Collections.unmodifiableCollection(legalMoves);
         this.isInCheck = !Player.calculateAttacksOnTile(this.playerKing.getPiecePosition(), opponentMoves).isEmpty();
     }
 
@@ -32,7 +34,7 @@ public abstract class Player {
         return this.legalMoves;
     }
 
-    private static Collection<Move> calculateAttacksOnTile(int piecePosition, Collection<Move> moves) {
+    protected static Collection<Move> calculateAttacksOnTile(int piecePosition, Collection<Move> moves) {
 
         final List<Move> attackMove = new ArrayList<>();
         for(final Move move : moves){
@@ -104,4 +106,6 @@ public abstract class Player {
     public abstract Alliance getAlliance();
 
     public abstract Player getOpponent();
+
+    public abstract Collection<Move> calculateKingCastle(Collection<Move> playerLegals, Collection<Move> opponentsLegals);
 }
