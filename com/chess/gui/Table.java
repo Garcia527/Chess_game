@@ -30,7 +30,6 @@ import java.awt.*;
 import static javax.swing.SwingUtilities.isLeftMouseButton;
 import static javax.swing.SwingUtilities.isRightMouseButton;
 
-// public class Table implements ActionListener{
 public class Table {
     
     private final JFrame gameFrame;
