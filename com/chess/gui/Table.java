@@ -8,6 +8,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
@@ -34,7 +35,7 @@ public class Table {
     
     private final JFrame gameFrame;
     private final BoardPanel boardPanel;
-    private final Board chessBoard;
+    private Board chessBoard;
 
     private Tile sourceTile;
     private Tile destinationTile;
@@ -105,6 +106,16 @@ public class Table {
             setPreferredSize(BOARD_PANEL_DIMENSION);
             validate();
         }
+
+        public void drawBoard(Board board) {
+            removeAll();
+            for(final TilePanel tilePanel : boardTiles) {
+                tilePanel.drawTile(board);
+                add(tilePanel);
+            }
+            validate();
+            repaint();
+        }
     }
 
     private class TilePanel extends JPanel {
@@ -134,33 +145,50 @@ public class Table {
                                 }
                             } else {
                                 destinationTile = chessBoard.getTile(tileId);
-                                final Move move = null;
+                                final Move move = Move.MoveFactory.createMove(chessBoard, sourceTile.getTileCoordinate(), destinationTile.getTileCoordinate());
+                                final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
+                                if(transition.getMoveStatus().isDone()) {
+                                    chessBoard = transition.getTransitionBoard();
+                                    //TODO 
+                                }
+                                sourceTile = null;
+                                destinationTile = null;
+                                humanMovedPiece = null;
                             }
+                            SwingUtilities.invokeLater(new Runnable() {
+                                @Override
+                                public void run(){
+                                    boardPanel.drawBoard(chessBoard);
+                                }
+                            });
                         }
                     } 
 
                 @Override
                 public void mouseEntered(final MouseEvent e) {
-                    throw new UnsupportedOperationException("Unimplemented method 'mouseEntered'");
                 }
 
                 @Override
                 public void mouseExited(final MouseEvent e) {
-                    throw new UnsupportedOperationException("Unimplemented method 'mouseExited'");
                 }
 
                 @Override
                 public void mousePressed(final MouseEvent e) {
-                    throw new UnsupportedOperationException("Unimplemented method 'mousePressed'");
                 }
 
                 @Override
                 public void mouseReleased(MouseEvent e) {
-                    throw new UnsupportedOperationException("Unimplemented method 'mouseReleased'");
                 }
                 
             });
             validate();
+        }
+
+        public void drawTile(final Board board) {
+            assignTileColor();
+            assignTilePieceIcon(board);
+            validate();
+            repaint();
         }
 
         private void assignTilePieceIcon(final Board board) {
